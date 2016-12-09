@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<title>登录练习</title>
+	<style type="text/css">
+
+		.boxInset{
+			height: 40px;
+			width: 200px;
+			border:1px solid transparent;
+			margin-bottom: 20px;
+			border:2px solid blue;
+			
+		}
+			
+
+		.boxButton{
+			height: 40px;
+			width: 40px;
+			border:2px solid blue;
+			position: absolute;
+			left: 60px;
+			
+
+		}
+
+	</style>
+		<script type="text/javascript">
+var xmlHttp;
+function accAdd(arg1,arg2){ 
+var r1,r2,m; 
+try{r1=arg1.toString().split(".")[1].length;}catch(e){r1=0;} 
+try{r2=arg2.toString().split(".")[1].length;}catch(e){r2=0;} 
+m=Math.pow(10,Math.max(r1,r2)); 
+return (arg1*m+arg2*m)/m; 
+} 
+function setCookie(c_name,value,expiredays)
+{
+var exdate=new Date()
+exdate.setDate(exdate.getDate()+expiredays)
+document.cookie=c_name+ "=" +escape(value)+
+((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+}
+
+function getCookie(c_name)
+{
+if (document.cookie.length>0)
+  {
+  c_start=document.cookie.indexOf(c_name + "=")
+  if (c_start!=-1)
+    { 
+    c_start=c_start + c_name.length+1 
+    c_end=document.cookie.indexOf(";",c_start)
+    if (c_end==-1) c_end=document.cookie.length
+    return unescape(document.cookie.substring(c_start,c_end))
+    } 
+  }
+return ""
+}
+function showUser(val)
+{ 
+xmlHttp=GetXmlHttpObject()
+if (xmlHttp==null)
+ {
+ alert ("Browser does not support HTTP Request")
+ return
+ }
+ setCookie('byid',val,60);
+  pwd=document.getElementById('password').value;
+ id=document.getElementById('username').value;
+  if(pwd==""&&id==""){
+ 	 alert('不可以为空')
+ }
+var url="http://localhost/1.php?id="+id+"&pwd="+pwd;
+xmlHttp.onreadystatechange=stateChanged 
+xmlHttp.open("POST",url,true)
+xmlHttp.send(null)
+}
+function show()
+{ 
+xmlHttp=GetXmlHttpObject()
+if (xmlHttp==null)
+ {
+ alert ("Browser does not support HTTP Request")
+ return
+ }
+ // setCookie('byid',val,60);
+  pwd=document.getElementById('password').value;
+ id=document.getElementById('username').value;
+  if(pwd==""&&id==""){
+ 	 alert('不可以为空')
+ }
+var url="http://localhost/2.php?id="+id+"&pwd="+pwd;
+xmlHttp.onreadystatechange=stateChanged2 
+xmlHttp.open("POST",url,true)
+xmlHttp.send(null)
+}
+
+function stateChanged() 
+{ 
+	byid=getCookie('byid');
+if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+ { 
+ document.getElementById(byid).innerHTML=xmlHttp.responseText;
+ if(xmlHttp.responseText!=1){
+ alert('注册成功')
+ }else{
+ 	 alert('注册失败')
+ }
+ } 
+}
+function stateChanged2() 
+{ 
+	byid=getCookie('byid');
+if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+ { 
+ if(xmlHttp.responseText==1){
+ alert('登录成功')
+ }else{
+ 	 alert('登录失败')
+ }
+ } 
+}
+
+function GetXmlHttpObject()
+{
+var xmlHttp=null;
+try
+ {
+ // Firefox, Opera 8.0+, Safari
+ xmlHttp=new XMLHttpRequest();
+ }
+catch (e)
+ {
+ //Internet Explorer
+ try
+  {
+  xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+  }
+ catch (e)
+  {
+  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+ }
+return xmlHttp;
+}
+		</script>
+</head>
+<body>
+		<admin id="myDiv" name="myDiv" >
+			<p>注册</p>
+    	姓名<label><input id="username" class="boxInset" type="text" name="username"></label><br>
+    	密码<label><input  id="password" class="boxInset" type="text" name="password" ></label><br>
+    	<input type="button" class="boxButton"  onclick="showUser('myDiv')" name="提交" value="提交">
+		</admin>
+
+</body>
+</html>
